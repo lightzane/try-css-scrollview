@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.--scroll-watcher {
+    height: 10px;
+    background-color: red;
+    width: 0%;
+    animation: progress linear;
+    animation-timeline: scroll();
+    /* 
+        The scroll() will listen to the parent scroller, 
+        but if you changed position to fixed,
+        the parent scroller will become the html/body itself.
+
+        The animation-timeline scroll() will become inactive if your the parent scroller
+        does NOT have a scroll.
+
+        And since we are using overflow-y-auto only on the child element,
+        then the html/body will never have a scroll. But only the child.
+    */ 
+}
+
+.--logo {
+    animation: spin linear;
+    animation-timeline: scroll();
+}
+
+@keyframes progress {
+    to { width: 100%; }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    scale: 0.8; opacity: 0;
+    animation: fade-in linear forwards;
+    animation-timeline: view(); /* animate when the element is on the viewport */
+    animation-range: entry; /* as soon as it enters the viewport and finishes after enter element is in viewport */
+}
+
+section h2 {
+    @apply text-3xl;
+}
+
+section p {
+    @apply text-lg;
+}
+
+
+@keyframes fade-in {
+    to {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+img:not(.--logo) {
+    /* transform-origin: top; */
+    /* transform-origin: bottom; */
+    animation: fade-out linear forwards;
+    animation-timeline: view();
+    animation-range: exit; 
+    /* 
+    animation-range: exit -200px;
+        so it will start exiting at -200px
+    */
+}
+
+@keyframes fade-out {
+    to { opacity: 0; scale: 3; }
+}
+
